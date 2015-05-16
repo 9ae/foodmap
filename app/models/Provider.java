@@ -10,9 +10,12 @@ import java.util.*;
 public class Provider extends Model {
 	
 	@Column(unique=true)
-	String shortname;
+	public String shortname;
 	
-	String baseURL;
+	public String baseURL;
 	
+	public static Provider findByShortname(String name){
+		return Provider.find("shortname=?", name).first();
+	}
     
 }

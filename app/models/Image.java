@@ -9,15 +9,18 @@ import java.util.*;
 @Entity
 public class Image extends Model {
     
-	String providerPictureId;
+	public String providerPictureId;
 	
-	String prefix;
-	String suffix;
+	public String prefix;
+	public String suffix;
 	
-	boolean processed;
+	public boolean processed;
 	
 	@ManyToOne
-	Venue venue;
+	public Venue venue;
+	
+	public String name;
+	public String description;
 	
 	//@OneToMany(mappedBy="venue", cascade=CascadeType.ALL)
 	//List<ImageTag> tags;
@@ -28,6 +31,11 @@ public class Image extends Model {
 		
 		this.processed = false;
 		
+	}
+	
+	public String getImageUrl(){
+		//TODO: implement correct image url for different providers
+		return "";
 	}
 	
 }

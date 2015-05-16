@@ -4,10 +4,15 @@
 
 # Home page
 
+GET		/									Application.index
 
 POST     /register                                       UserApps.register
 
-GET		/test_yelp								Application.testYelp
+GET		/start								Seekers.start
+
+# Tests
+GET		/test/yelp_search					TestControllers.testYelp
+GET	/test/yelp_menu_validator			TestControllers.yelpMenuValidator
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

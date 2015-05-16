@@ -10,17 +10,17 @@ import java.util.*;
 @Entity
 public class Venue extends Model {
     
-	String providerVenueId;
+	public String providerVenueId;
 	
 	@ManyToOne
-	Provider provider;
+	public Provider provider;
 	
-	String name;
+	public String name;
 	
-	Double lat;
-	Double lon;
+	public Double lat;
+	public Double lon;
 	
-	Calendar lastImagesUpdate;
+	public Calendar lastImagesUpdate;
 	
 	public Venue(String providerVenueId, Provider provider, String name, double lat, double lon){
 		this.providerVenueId = providerVenueId;
@@ -30,6 +30,36 @@ public class Venue extends Model {
 		this.lon = lon;
 		
 		lastImagesUpdate = Calendar.getInstance();
+	}
+	
+	public static Venue findByProviderId(String providerShortname, String id){
+		return Venue.find("provider.shortname=? AND providerVenueId=?", providerShortname, id).first();
+	}
+
+	public Image getBestPictureOfTag(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public String getURL(){
+		//TODO get provider's url for venue
+		return "";
+	}
+	
+	public String getMenuUrl(){
+		if (this.provider.shortname.equals("yelp")){
+			return "http://www.yelp.com/menu/"+this.providerVenueId;
+		} else {
+			return null;
+		}
+	}
+	
+	public String getPhotosUrl(){
+		if (this.provider.shortname.equals("yelp")){
+			return "http://www.yelp.com/biz_photos/"+this.providerVenueId;
+		} else {
+			return null;
+		}
 	}
 	
 }

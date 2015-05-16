@@ -10,10 +10,10 @@ import java.util.*;
 public class ImageTag extends Model {
     
 	@ManyToOne
-	Image image;
+	public Image image;
 	
 	String name;
-	double confidence;
+	public double confidence;
 	
 	public ImageTag(Image image, String name, double confidence){
 		this.image = image;

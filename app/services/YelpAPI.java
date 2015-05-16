@@ -30,7 +30,7 @@ public class YelpAPI {
   private static final String API_HOST = "api.yelp.com";
   private static final String DEFAULT_TERM = "food";
   private static final String DEFAULT_LOCATION = "New York, NY";
-  private static final int SEARCH_LIMIT = 3;
+  private static final int SEARCH_LIMIT = 10;
   private static final String SEARCH_PATH = "/v2/search";
   private static final String BUSINESS_PATH = "/v2/business";
 
@@ -45,6 +45,8 @@ public class YelpAPI {
 
   OAuthService service;
   Token accessToken;
+  
+  private int pageSize = 3;
 
   public YelpAPI(){
 	  this.service =
@@ -53,6 +55,13 @@ public class YelpAPI {
 		    this.accessToken = new Token(TOKEN, TOKEN_SECRET);
   }
   
+  public int getPageSize(){
+	  return pageSize;
+  }
+  
+  public void setPageSize(int size){
+	  this.pageSize = size;
+  }
   
   /**
    * Setup the Yelp API OAuth credentials.
@@ -68,6 +77,17 @@ public class YelpAPI {
             .apiSecret(consumerSecret).build();
     this.accessToken = new Token(token, tokenSecret);
   }
+  
+  public String searchForFoodByCoordinates(String city, String coords) {
+	    OAuthRequest request = createOAuthRequest(SEARCH_PATH);
+	    request.addQuerystringParameter("term", "food");
+	    request.addQuerystringParameter("location", city);
+	    request.addQuerystringParameter("cll", coords);
+	    request.addQuerystringParameter("category_filter", "food");
+	    request.addQuerystringParameter("sort","1");
+	    request.addQuerystringParameter("limit", String.valueOf(pageSize));
+	    return sendRequestAndGetResponse(request);
+	  }
 
   /**
    * Creates and sends a request to the Search API by term and location.

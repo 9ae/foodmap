@@ -14,10 +14,12 @@ public class Application extends Controller {
         render();
     }
     
-    public static void testYelp(){
+    public static void search(String city, String lat, String lon){ 	
     	YelpAPI yelp = new YelpAPI();
-    	String result = yelp.searchForBusinessesByLocation("ramen", "New York, NY");
+    	String result = yelp.searchForFoodByCoordinates(city, lat+","+lon);
     	renderJSON(result);
     }
+    
+    
 
 }
