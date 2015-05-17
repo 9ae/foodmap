@@ -14,12 +14,13 @@ public class Image extends Model {
 	public String prefix;
 	public String suffix;
 	
+	public String providerImageUrl;
+	
 	public boolean processed;
 	
 	@ManyToOne
 	public Venue venue;
 	
-	public String name;
 	public String description;
 	
 	//@OneToMany(mappedBy="venue", cascade=CascadeType.ALL)
@@ -30,6 +31,15 @@ public class Image extends Model {
 		this.providerPictureId = providerPictureId;
 		
 		this.processed = false;
+		
+	}
+	
+	public Image(Venue venue, String url, String description){
+		this.venue = venue;
+		this.providerImageUrl = url;
+		this.description = description;
+		
+		this.processed = true;
 		
 	}
 	

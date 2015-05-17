@@ -25,7 +25,7 @@ public class RegisterVenueJob extends Job {
 	public void doJob(){
 		//TODO: try Menu
 		String menuURL = this.venue.getMenuUrl();
-		boolean isValid = WebpageValidators.soupValidateYelpMenu(menuURL);
+		boolean isValid = this.venue.makeSoupFromMenu();
 		if(isValid){
 			//TODO: alert menu validation failed
 			System.out.println("Menu validation failed");
