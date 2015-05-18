@@ -45,7 +45,7 @@ public class Image extends Model {
 	
 	public String getImageUrl(){
 		//TODO: implement correct image url for different providers
-		return "";
+		return this.providerImageUrl;
 	}
 	
 }

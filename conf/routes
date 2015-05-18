@@ -9,6 +9,7 @@ GET		/									Application.index
 POST     /register                                       UserApps.register
 
 GET		/start								Seekers.start
+GET		/check/{seeker_id}					Seekers.check
 
 # Tests
 GET		/test/yelp_search					TestControllers.testYelp

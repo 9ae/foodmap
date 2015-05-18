@@ -43,15 +43,21 @@ public class SeekerJob extends Job {
     		if(venue==null){
     			String venueName = venueObject.get("name").getAsString();
     			JsonObject coords = venueObject.get("location").getAsJsonObject().get("coordinate").getAsJsonObject();
-    			RegisterVenueJob registerVenue = new RegisterVenueJob(yelpAsProvider, this.seeker, yelpId, venueName,
+    			
+    			System.out.println("Found new venue: "+venueName);
+    			new RegisterVenueJob(yelpAsProvider, this.seeker, yelpId, venueName,
     					coords.get("latitude").getAsDouble(),
-    					coords.get("longitude").getAsDouble());
-    			registerVenue.run();
-    			//TODO spin off another job to process venues
+    					coords.get("longitude").getAsDouble()).now();
+    			
     		} else {
     			Image img = venue.getBestPictureOfTag(seeker.tag);
-    			SeekerResult sr = new SeekerResult(seeker, img);
-    			sr.save();
+    			if(img!=null){
+	    			SeekerResult sr = new SeekerResult(seeker, img);
+	    			sr.save();
+	    			System.out.println("Exisiting venue, has relevant photo");
+    			} else {
+    				System.out.println("Exisiting venue, NO relevant photo");
+    			}
     		}
     	}
     	

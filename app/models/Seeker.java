@@ -54,12 +54,6 @@ public class Seeker extends Model {
 		return jay;
 	}
 	
-	public void proccess(){
-		SeekerJob job = new SeekerJob(this);
-		job.run();
-		
-	}
-	
 	public JsonArray getResults(){
 		JsonArray results = new JsonArray();
 		List<SeekerResult> seekerResults = SeekerResult.find("seeker=? AND retrieved=?", this, false).fetch();

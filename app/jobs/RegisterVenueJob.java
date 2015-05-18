@@ -2,8 +2,10 @@ package jobs;
 
 import org.w3c.dom.Document;
 
+import models.Image;
 import models.Provider;
 import models.Seeker;
+import models.SeekerResult;
 import models.Venue;
 import play.jobs.Job;
 import play.libs.WS;
@@ -23,19 +25,17 @@ public class RegisterVenueJob extends Job {
 	}
 	
 	public void doJob(){
-		//TODO: try Menu
-		String menuURL = this.venue.getMenuUrl();
 		boolean isValid = this.venue.makeSoupFromMenu();
-		if(isValid){
-			//TODO: alert menu validation failed
+		if(!isValid){
 			System.out.println("Menu validation failed");
-		}	
-		 else {
-			//TODO: look at photos
 			String photosPageURL = this.venue.getPhotosUrl();
 		
 		}
-		
+		Image img = venue.getBestPictureOfTag(seeker.tag);
+		if(img!=null){
+			SeekerResult sr = new SeekerResult(seeker, img);
+			sr.save();
+		}
 	}
 	
 }

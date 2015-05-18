@@ -42,13 +42,12 @@ public class Venue extends Model {
 	}
 
 	public Image getBestPictureOfTag(String string) {
-		// TODO Auto-generated method stub
-		return null;
+		//TODO: make opt this just gets first
+		return Image.find("venue=? AND description LIKE ?", this, "%"+string+"%").first();
 	}
 	
 	public String getURL(){
-		//TODO get provider's url for venue
-		return "";
+		return "http://www.yelp.com/biz/"+this.providerVenueId;
 	}
 	
 	public String getMenuUrl(){
@@ -69,13 +68,15 @@ public class Venue extends Model {
 	
 	public boolean makeSoupFromMenu(){
 		String url = getMenuUrl();
+		System.out.println("going to :"+url);
 		String selector = "div.menu-section > div.menu-item:not(.menu-item-placeholder-photo)";
 		try {
 			org.jsoup.nodes.Document doc = Jsoup.connect(url).get();
 			Elements menuItems = doc.select(selector);
-			if(menuItems.size() > 0){
+			if(menuItems.size()==0){
 				return false;
 			} else {
+				System.out.println("Going through "+menuItems.size()+" menu items");
 				Iterator<Element> eleIt = menuItems.iterator();
 				while(eleIt.hasNext()){
 					Element item = eleIt.next();
@@ -83,6 +84,7 @@ public class Venue extends Model {
 					String description;
 					Elements itemImages = item.select("div.biz-photo-box img.photo-box-img");
 					if(itemImages.isEmpty()){
+						System.out.println("no image for this item");
 						continue;
 					} else {
 						Element img = itemImages.get(0);
@@ -91,13 +93,16 @@ public class Venue extends Model {
 					Elements itemTitles = item.select("div.menu-item-details h3");
 					Elements itemDescriptions = item.select("div.menu-item-details div.menu-item-details-description");
 					if(itemTitles.isEmpty() && itemDescriptions.isEmpty()){
+						System.out.println("no description for this item");
 						continue;
 					}
 					description = itemTitles.text().trim() + " " + itemDescriptions.text().trim();
-					
-					Image img = new Image(this, imgSrc, description);
+					System.out.println("\t "+imgSrc+" : "+description);
+					Image img = new Image(this, imgSrc, description.toLowerCase());
 					img.save();
 				}
+				System.out.println("Complete menu photos registration");
+				lastImagesUpdate = Calendar.getInstance();
 				return true;
 			}
 		} catch (IOException e) {
