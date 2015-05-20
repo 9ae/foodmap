@@ -42,8 +42,23 @@ public class Venue extends Model {
 	}
 
 	public Image getBestPictureOfTag(String string) {
-		//TODO: make opt this just gets first
-		return Image.find("venue=? AND description LIKE ?", this, "%"+string+"%").first();
+		String queryString = "SELECT img FROM ImageTag tag"
+				+ " JOIN tag.image img"
+				+ " WHERE"
+				+ " img.venue.id = :venue_id"
+				+ " AND"
+				+ " tag.name LIKE :tag_name"
+				+ " ORDER BY tag.confidence DESC";
+		Query query = JPA.em().createQuery(queryString);
+		query.setParameter("venue_id", this.id);
+		query.setParameter("tag_name", string);
+		query.setMaxResults(1);
+		List<Image> images = query.getResultList();
+		if (images.isEmpty()){
+			return null;
+		} else {
+			return images.get(0);
+		}
 	}
 	
 	public String getURL(){
@@ -96,10 +111,14 @@ public class Venue extends Model {
 						System.out.println("no description for this item");
 						continue;
 					}
-					description = itemTitles.text().trim() + " " + itemDescriptions.text().trim();
+					description = itemTitles.text().trim().toLowerCase();
 					System.out.println("\t "+imgSrc+" : "+description);
-					Image img = new Image(this, imgSrc, description.toLowerCase());
+					Image img = new Image(this);
+					img.description = description;
+					img.yelpImageUrlParser(imgSrc, "60s");
 					img.save();
+					img.makeTags(itemDescriptions.text().trim().toLowerCase());
+					
 				}
 				System.out.println("Complete menu photos registration");
 				lastImagesUpdate = Calendar.getInstance();
