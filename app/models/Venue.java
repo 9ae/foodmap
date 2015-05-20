@@ -125,10 +125,53 @@ public class Venue extends Model {
 				return true;
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			return false;
-		}
+		} 
+	}
+	
+	public boolean makeSoupFromPhotos(){
+		String url = getPhotosUrl();
+		System.out.println("going to :"+url);
+		String selector = "div.photos > div.photo";
+		try {
+			org.jsoup.nodes.Document doc = Jsoup.connect(url).get();
+			Elements photos = doc.select(selector);
+			if(photos.size()==0){
+				return false;
+			} else {
+				System.out.println("Going through "+photos.size()+" phtos");
+				Iterator<Element> eleIt = photos.iterator();
+				while(eleIt.hasNext()){
+					Element item = eleIt.next();
+					String imgSrc;
+					String description;
+					Elements itemImages = item.select("div.biz-photo-box img.photo-box-img");
+					if(itemImages.isEmpty()){
+						System.out.println("no image for this item");
+						continue;
+					} else {
+						Element img = itemImages.get(0);
+						imgSrc = img.attr("src");
+						description = img.attr("alt");
+					}
+					description = description.trim().toLowerCase();
+					description = description.replaceAll("\\!", "");
+					description = description.replaceAll("\\.", "");
+					System.out.println("\t "+imgSrc+" : "+description);
+					Image img = new Image(this);
+					img.description = description;
+					img.yelpImageUrlParser(imgSrc, "ms");
+					img.save();
+					img.makeTags(description);
+					
+				}
+				System.out.println("Complete menu photos registration");
+				lastImagesUpdate = Calendar.getInstance();
+				return true;
+			}
+		} catch (IOException e) {
+			return false;
+		} 
 	}
 	
 }

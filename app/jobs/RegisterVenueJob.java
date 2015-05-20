@@ -10,7 +10,6 @@ import play.jobs.Job;
 import play.libs.WS;
 import play.libs.WS.HttpResponse;
 import play.libs.XML;
-import services.WebpageValidators;
 
 public class RegisterVenueJob extends Job {
 
@@ -26,9 +25,7 @@ public class RegisterVenueJob extends Job {
 	public void doJob(){
 		boolean isValid = this.venue.makeSoupFromMenu();
 		if(!isValid){
-			System.out.println("Menu validation failed");
-			String photosPageURL = this.venue.getPhotosUrl();
-		
+			this.venue.makeSoupFromPhotos();
 		}
 		Image img = venue.getBestPictureOfTag(seeker.tag);
 		if(img!=null){

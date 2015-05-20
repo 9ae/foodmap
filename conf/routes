@@ -13,7 +13,6 @@ GET		/check/{seeker_id}					Seekers.check
 
 # Tests
 GET		/test/yelp_search					TestControllers.testYelp
-GET	/test/yelp_menu_validator			TestControllers.yelpMenuValidator
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

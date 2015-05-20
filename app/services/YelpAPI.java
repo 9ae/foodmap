@@ -88,6 +88,17 @@ public class YelpAPI {
 	    request.addQuerystringParameter("limit", String.valueOf(pageSize));
 	    return sendRequestAndGetResponse(request);
 	  }
+  
+  public String searchForFoodByCoordinates(String city, String coords, String tag) {
+	    OAuthRequest request = createOAuthRequest(SEARCH_PATH);
+	    request.addQuerystringParameter("term", tag);
+	    request.addQuerystringParameter("location", city);
+	    request.addQuerystringParameter("cll", coords);
+	    request.addQuerystringParameter("category_filter", "food");
+	    request.addQuerystringParameter("sort","1");
+	    request.addQuerystringParameter("limit", String.valueOf(pageSize));
+	    return sendRequestAndGetResponse(request);
+	  }
 
   /**
    * Creates and sends a request to the Search API by term and location.

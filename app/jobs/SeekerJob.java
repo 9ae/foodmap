@@ -29,7 +29,7 @@ public class SeekerJob extends Job {
 		YelpAPI yelp = new YelpAPI();
 		int pageLimit = yelp.getPageSize();
 		
-    	String yelpVenueSearchResponse = yelp.searchForFoodByCoordinates(seeker.city, seeker.coords);
+    	String yelpVenueSearchResponse = yelp.searchForFoodByCoordinates(seeker.city, seeker.coords, seeker.tag);
     
     	JsonObject yelpVenuesObject = jsonParser.parse(yelpVenueSearchResponse).getAsJsonObject();
     	int totalYelpVenues = yelpVenuesObject.get("total").getAsInt();
@@ -41,12 +41,20 @@ public class SeekerJob extends Job {
     		Venue venue = Venue.findByProviderId(Providers.YELP, yelpId);
     		if(venue==null){
     			String venueName = venueObject.get("name").getAsString();
-    			JsonObject coords = venueObject.get("location").getAsJsonObject().get("coordinate").getAsJsonObject();
+    			Double lon=0.0;
+    			Double lat=0.0;
+    			if(venueObject.has("location")){
+    				JsonObject location = venueObject.get("location").getAsJsonObject();
+    				if(location.has("coordinate")){
+		    			JsonObject coords = location.get("coordinate").getAsJsonObject();
+		    			lat = coords.get("latitude").getAsDouble();
+		    			lon = coords.get("longitude").getAsDouble();
+    				}
+    			}
     			
     			System.out.println("Found new venue: "+venueName);
     			new RegisterVenueJob(Providers.YELP, this.seeker, yelpId, venueName,
-    					coords.get("latitude").getAsDouble(),
-    					coords.get("longitude").getAsDouble()).now();
+    					lat, lon).now();
     			
     		} else {
     			Image img = venue.getBestPictureOfTag(seeker.tag);

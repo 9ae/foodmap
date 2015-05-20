@@ -18,10 +18,14 @@ public class Words {
 		if(len==1){
 			return words[0].equals(word);
 		}
-		int midpoint = len/2 + len%2;
+		int midpoint = len/2;
 		int compare = word.compareTo(words[midpoint]);
 		if(compare>0){
-			return binarySearch(word, Arrays.copyOfRange(words, midpoint+1, len));
+			if(midpoint==(len-1)){
+				return false;
+			} else {
+				return binarySearch(word, Arrays.copyOfRange(words, midpoint+1, len));
+			}
 		} else if (compare<0){
 			return binarySearch(word, Arrays.copyOfRange(words, 0, midpoint));
 		} else {
