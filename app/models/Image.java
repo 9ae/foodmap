@@ -2,6 +2,7 @@ package models;
 
 import play.*;
 import play.db.jpa.*;
+import services.Providers;
 import services.Words;
 
 import javax.persistence.*;
@@ -64,7 +65,7 @@ public class Image extends Model {
 	}
 	
 	public String getImageUrl(){
-		if(this.venue.provider.shortname=="yelp"){
+		if(this.venue.provider==Providers.YELP){
 			return prefix + "/bphoto/" + providerPictureId + "/l." + suffix;
 		} else {
 			return "";

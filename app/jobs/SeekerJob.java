@@ -7,12 +7,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import models.Image;
-import models.Provider;
 import models.Seeker;
 import models.SeekerResult;
 import models.Venue;
 import play.jobs.Job;
 import services.YelpAPI;
+import services.Providers;
 
 public class SeekerJob extends Job {
 	
@@ -28,7 +28,6 @@ public class SeekerJob extends Job {
 		
 		YelpAPI yelp = new YelpAPI();
 		int pageLimit = yelp.getPageSize();
-		Provider yelpAsProvider = Provider.findByShortname("yelp");
 		
     	String yelpVenueSearchResponse = yelp.searchForFoodByCoordinates(seeker.city, seeker.coords);
     
@@ -39,13 +38,13 @@ public class SeekerJob extends Job {
     	for(JsonElement e: yelpVenues){
     		JsonObject venueObject = e.getAsJsonObject();
     		String yelpId = venueObject.get("id").getAsString();
-    		Venue venue = Venue.findByProviderId("yelp", yelpId);
+    		Venue venue = Venue.findByProviderId(Providers.YELP, yelpId);
     		if(venue==null){
     			String venueName = venueObject.get("name").getAsString();
     			JsonObject coords = venueObject.get("location").getAsJsonObject().get("coordinate").getAsJsonObject();
     			
     			System.out.println("Found new venue: "+venueName);
-    			new RegisterVenueJob(yelpAsProvider, this.seeker, yelpId, venueName,
+    			new RegisterVenueJob(Providers.YELP, this.seeker, yelpId, venueName,
     					coords.get("latitude").getAsDouble(),
     					coords.get("longitude").getAsDouble()).now();
     			

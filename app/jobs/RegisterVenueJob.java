@@ -3,7 +3,6 @@ package jobs;
 import org.w3c.dom.Document;
 
 import models.Image;
-import models.Provider;
 import models.Seeker;
 import models.SeekerResult;
 import models.Venue;
@@ -18,7 +17,7 @@ public class RegisterVenueJob extends Job {
 	private Seeker seeker;
 	private Venue venue;
 	
-	public RegisterVenueJob(Provider provider, Seeker seeker, String providerId, String name, double lat, double lon){
+	public RegisterVenueJob(int provider, Seeker seeker, String providerId, String name, double lat, double lon){
 		this.seeker = seeker;
 		this.venue = new Venue(providerId, provider, name, lat, lon);
 		venue.save();

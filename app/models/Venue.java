@@ -2,6 +2,7 @@ package models;
 
 import play.*;
 import play.db.jpa.*;
+import services.Providers;
 
 import javax.persistence.*;
 
@@ -17,8 +18,7 @@ public class Venue extends Model {
     
 	public String providerVenueId;
 	
-	@ManyToOne
-	public Provider provider;
+	public int provider;
 	
 	public String name;
 	
@@ -27,7 +27,7 @@ public class Venue extends Model {
 	
 	public Calendar lastImagesUpdate;
 	
-	public Venue(String providerVenueId, Provider provider, String name, double lat, double lon){
+	public Venue(String providerVenueId, int provider, String name, double lat, double lon){
 		this.providerVenueId = providerVenueId;
 		this.provider = provider;
 		this.name = name;
@@ -37,8 +37,8 @@ public class Venue extends Model {
 		lastImagesUpdate = Calendar.getInstance();
 	}
 	
-	public static Venue findByProviderId(String providerShortname, String id){
-		return Venue.find("provider.shortname=? AND providerVenueId=?", providerShortname, id).first();
+	public static Venue findByProviderId(int provider, String id){
+		return Venue.find("provider=? AND providerVenueId=?", provider, id).first();
 	}
 
 	public Image getBestPictureOfTag(String string) {
@@ -66,7 +66,7 @@ public class Venue extends Model {
 	}
 	
 	public String getMenuUrl(){
-		if (this.provider.shortname.equals("yelp")){
+		if (this.provider==Providers.YELP){
 			return "http://www.yelp.com/menu/"+this.providerVenueId;
 		} else {
 			return null;
@@ -74,7 +74,7 @@ public class Venue extends Model {
 	}
 	
 	public String getPhotosUrl(){
-		if (this.provider.shortname.equals("yelp")){
+		if (this.provider==Providers.YELP){
 			return "http://www.yelp.com/biz_photos/"+this.providerVenueId;
 		} else {
 			return null;
