@@ -56,7 +56,9 @@ public class Seeker extends Model {
 	
 	public JsonArray getResults(){
 		JsonArray results = new JsonArray();
-		List<SeekerResult> seekerResults = SeekerResult.find("seeker=? AND retrieved=?", this, false).fetch();
+		TypedQuery<SeekerResult> query = JPA.em().createQuery("SELECT sr FROM SeekerResult sr WHERE seeker.id=:seeker_id AND retrieved=false", SeekerResult.class);
+		query.setParameter("seeker_id", this.id);
+		List<SeekerResult> seekerResults = query.getResultList();
 		for(SeekerResult sr : seekerResults){
 			JsonObject result = new JsonObject();
 			Venue venue = sr.image.venue;
