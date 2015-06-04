@@ -66,7 +66,15 @@ public class Image extends Model {
 	
 	public String getImageUrl(){
 		if(this.venue.provider==Providers.YELP){
-			return prefix + "/bphoto/" + providerPictureId + "/l." + suffix;
+			return prefix + "/bphoto/" + providerPictureId + "/ms." + suffix;
+		} else {
+			return "";
+		}
+	}
+	
+	public String getImageUrl(String size){
+		if(this.venue.provider==Providers.YELP){
+			return prefix + "/bphoto/" + providerPictureId + "/"+size+"." + suffix;
 		} else {
 			return "";
 		}
