@@ -24,7 +24,7 @@ public class Seekers extends JsonController {
 		if (auth_token==null){
 			return null;
 		} else {
-			return UserApp.find("authToken=?", auth_token).first();
+			return UserApp.findByAuthToken(auth_token);
 		}
 	}
 

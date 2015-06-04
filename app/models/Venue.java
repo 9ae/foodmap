@@ -38,7 +38,15 @@ public class Venue extends Model {
 	}
 	
 	public static Venue findByProviderId(int provider, String id){
-		return Venue.find("provider=? AND providerVenueId=?", provider, id).first();
+		TypedQuery<Venue> query = JPA.em().createQuery("SELECT v FROM Venue v WHERE v.provider=:provider AND v.providerVenueId=:venue_id", Venue.class);
+		query.setParameter("provider", provider);
+		query.setParameter("venue_id", id);
+		query.setMaxResults(1);
+		try{
+			return query.getSingleResult();
+		} catch(NoResultException ex){
+			return null;
+		}
 	}
 
 	public Image getBestPictureOfTag(String string) {
