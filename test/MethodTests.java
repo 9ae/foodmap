@@ -24,8 +24,15 @@ public class MethodTests {
     
     }
 	
+	public static void strip(){
+		String input = "my lunch:  dry cappuccino & veggie lentil soup  both delicious";
+		input = input.replaceAll("[^a-zA-Z0-9\\s]", "");
+		input = input.replaceAll("\\s{2,}", " ");
+		System.out.println(input);
+	}
+	
 	public static void main(String[] args) {
-		testYelpImageUrlParser();
+		strip();
 	}
 
 }

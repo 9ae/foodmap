@@ -163,8 +163,8 @@ public class Venue extends Model {
 						description = img.attr("alt");
 					}
 					description = description.trim().toLowerCase();
-					description = description.replaceAll("\\!", "");
-					description = description.replaceAll("\\.", "");
+					description = description.replaceAll("[^a-zA-Z0-9\\s]", "");
+					description = description.replaceAll("\\s{2,}", " ");
 					System.out.println("\t "+imgSrc+" : "+description);
 					Image img = new Image(this);
 					img.description = description;
