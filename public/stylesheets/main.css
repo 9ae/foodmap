@@ -1,0 +1,18 @@
+#map {
+	height: 100%;
+	z-index: 0;
+}
+
+.search-container {
+	z-index: 1;
+	width: 100%;
+	text-align: center;
+	top: 10px;
+	padding-left: 30%;
+	position: absolute;
+}
+
+.search-field {
+	opacity: 0.8;
+	width: 40%;
+}

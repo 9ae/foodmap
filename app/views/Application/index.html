@@ -1,1 +1,29 @@
-#{set title:'Home' /}
+<html ng-app="tofu">
+	<head>
+		<title>Nom chomp!</title>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
+		<link rel="stylesheet" type="text/css" href="public/stylesheets/main.css" />
+		
+		<script type="text/javascript" src="public/javascripts/angular-1.4.7/angular.js"></script>
+		<script type="text/javascript" src="public/javascripts/angular-1.4.7/angular-animate.min.js"></script>
+		<script type="text/javascript" src="public/javascripts/angular-1.4.7/angular-aria.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.js"></script>
+		
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUkP074eX_u4Z7ihewzk5o48rrrtj2vAM&callback=initMap">
+    </script>
+		<script type="text/javascript" src="public/javascripts/app.js"></script>
+	</head>
+	<body ng-controller="SearchMapper">
+		<div class="search-container">
+			<md-content layout-padding class="search-field">
+		    <md-input-container>
+		      <label>What are you in the mood for?</label>
+		      <input ng-model="tag" placeholder="Just feed me!" ng-enter="doSearch()">
+		    </md-input-container>
+		   </md-content>
+		</div>
+		<div id="map"></div>
+
+    
+	</body>
+</html>
