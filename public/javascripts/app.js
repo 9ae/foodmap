@@ -37,8 +37,14 @@ app.directive('ngEnter', function() {
 
 app.controller('SearchMapper', function($scope) {
 	$scope.tag = '';
+	$scope.onSearch = false;
 	
 	$scope.doSearch = function(){
-		console.log($scope.tag);
+		$scope.onSearch = true;
+	};
+	
+	$scope.restartSearch = function(){
+		$scope.tag = '';
+		$scope.onSearch = false;
 	};
 });

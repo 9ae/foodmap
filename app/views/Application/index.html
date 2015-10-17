@@ -15,12 +15,15 @@
 	</head>
 	<body ng-controller="SearchMapper">
 		<div class="search-container">
-			<md-content layout-padding class="search-field">
+			<md-content layout-padding class="search-field" ng-hide="onSearch">
 		    <md-input-container>
 		      <label>What are you in the mood for?</label>
 		      <input ng-model="tag" placeholder="Just feed me!" ng-enter="doSearch()">
 		    </md-input-container>
 		   </md-content>
+		   <div class="search-done" ng-show="onSearch">
+		   	Finding <b>{{tag}}</b> near you
+		   </div>
 		</div>
 		<div id="map"></div>
 
